@@ -32,6 +32,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#if defined(__CHERI_PURE_CAPABILITY__)
+#include <stdalign.h>
+#include <stddef.h>
+#endif   // __CHERI_PURE_CAPABILITY__
 
 #include "common/attributes.h"
 #include "common/intops.h"
@@ -46,7 +50,11 @@ struct MuxerContext {
     unsigned fps[2];
     const char *filename;
     int framenum;
+#if defined(__CHERI_PURE_CAPABILITY__)
+    alignas(max_align_t) uint64_t priv_data[];
+#else   // !__CHERI_PURE_CAPABILITY__
     uint64_t priv_data[];
+#endif  // !__CHERI_PURE_CAPABILITY__
 };
 
 extern const Muxer null_muxer;
