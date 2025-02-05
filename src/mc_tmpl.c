@@ -824,9 +824,9 @@ static void warp_affine_8x8t_c(int16_t *tmp, const ptrdiff_t tmp_stride,
     }
 }
 
-static void emu_edge_c(const intptr_t bw, const intptr_t bh,
-                       const intptr_t iw, const intptr_t ih,
-                       const intptr_t x, const intptr_t y,
+static void emu_edge_c(const int bw, const int bh,
+                       const int iw, const int ih,
+                       const int x, const int y,
                        pixel *dst, const ptrdiff_t dst_stride,
                        const pixel *ref, const ptrdiff_t ref_stride)
 {
