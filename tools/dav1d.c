@@ -168,8 +168,12 @@ static int picture_alloc(Dav1dPicture *const p, void *const _) {
     if (!buf) return DAV1D_ERR(ENOMEM);
     p->allocator_data = buf;
 
+#if __has_builtin(__builtin_align_up)
+    uint8_t *const data = __builtin_align_up(buf, DAV1D_PICTURE_ALIGNMENT);
+#else
     const ptrdiff_t align_m1 = DAV1D_PICTURE_ALIGNMENT - 1;
     uint8_t *const data = (uint8_t *)(((ptrdiff_t)buf + align_m1) & ~align_m1);
+#endif
     p->data[0] = data + y_sz - y_stride;
     p->data[1] = has_chroma ? data + y_sz + uv_sz * 1 - uv_stride : NULL;
     p->data[2] = has_chroma ? data + y_sz + uv_sz * 2 - uv_stride : NULL;
